@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FlightTicketManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ACCOUNT">
+    <Key>
+      <PropertyRef Name="AccountID" />
+    </Key>
+    <Property Name="AccountID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Created" Type="DateTime" Precision="0" />
+    <Property Name="RoleID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="PERMISSION" Relationship="Self.FK__ACCOUNT__RoleID__628FA481" FromRole="ACCOUNT" ToRole="PERMISSION" />
+  </EntityType>
+  <EntityType Name="AIRPORT">
+    <Key>
+      <PropertyRef Name="AirportID" />
+    </Key>
+    <Property Name="AirportID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AirportName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CityName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CountryName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="FLIGHTs" Relationship="Self.FK__FLIGHT__ArrivalA__68487DD7" FromRole="AIRPORT" ToRole="FLIGHT" />
+    <NavigationProperty Name="FLIGHTs1" Relationship="Self.FK__FLIGHT__Departur__6754599E" FromRole="AIRPORT" ToRole="FLIGHT" />
+    <NavigationProperty Name="FLIGHT_DETAIL" Relationship="Self.FK__FLIGHT_DE__Preve__656C112C" FromRole="AIRPORT" ToRole="FLIGHT_DETAIL" />
+  </EntityType>
+  <EntityType Name="ANNUAL_REVENUE_REPORT">
+    <Key>
+      <PropertyRef Name="Years" />
+    </Key>
+    <Property Name="Years" Type="Int32" Nullable="false" />
+    <Property Name="TotalRevenue" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DETAILED_ANNUAL_REVENUE_REPORT">
+    <Key>
+      <PropertyRef Name="Years" />
+      <PropertyRef Name="Months" />
+    </Key>
+    <Property Name="Years" Type="Int32" Nullable="false" />
+    <Property Name="Months" Type="Int32" Nullable="false" />
+    <Property Name="FlightCount" Type="Int32" Nullable="false" />
+    <Property Name="Revenue" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="Ratio" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DETAILED_MONTHLY_REVENUE_REPORT">
+    <Key>
+      <PropertyRef Name="Years" />
+      <PropertyRef Name="Months" />
+      <PropertyRef Name="FlightID" />
+    </Key>
+    <Property Name="Years" Type="Int32" Nullable="false" />
+    <Property Name="Months" Type="Int32" Nullable="false" />
+    <Property Name="FlightID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TicketSold" Type="Int32" Nullable="false" />
+    <Property Name="Revenue" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="Ratio" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <NavigationProperty Name="FLIGHT" Relationship="Self.FK__DETAILED___Fligh__6E01572D" FromRole="DETAILED_MONTHLY_REVENUE_REPORT" ToRole="FLIGHT" />
+  </EntityType>
+  <EntityType Name="FLIGHT">
+    <Key>
+      <PropertyRef Name="FlightID" />
+    </Key>
+    <Property Name="FlightID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PlaneID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DepartureAirportCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ArrivalAirportCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TicketPrice" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="DepartureDateTime" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="FlightDuration" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AIRPORT" Relationship="Self.FK__FLIGHT__ArrivalA__68487DD7" FromRole="FLIGHT" ToRole="AIRPORT" />
+    <NavigationProperty Name="AIRPORT1" Relationship="Self.FK__FLIGHT__Departur__6754599E" FromRole="FLIGHT" ToRole="AIRPORT" />
+    <NavigationProperty Name="DETAILED_MONTHLY_REVENUE_REPORT" Relationship="Self.FK__DETAILED___Fligh__6E01572D" FromRole="FLIGHT" ToRole="DETAILED_MONTHLY_REVENUE_REPORT" />
+    <NavigationProperty Name="PLANE" Relationship="Self.FK__FLIGHT__PlaneID__693CA210" FromRole="FLIGHT" ToRole="PLANE" />
+    <NavigationProperty Name="FLIGHT_DETAIL" Relationship="Self.FK__FLIGHT_DE__Fligh__66603565" FromRole="FLIGHT" ToRole="FLIGHT_DETAIL" />
+    <NavigationProperty Name="FLIGHT_TICKET" Relationship="Self.FK__FLIGHT_TI__Fligh__6383C8BA" FromRole="FLIGHT" ToRole="FLIGHT_TICKET" />
+    <NavigationProperty Name="FLIGHT_TICKET_CLASS_DETAIL" Relationship="Self.FK__FLIGHT_TI__Fligh__6D0D32F4" FromRole="FLIGHT" ToRole="FLIGHT_TICKET_CLASS_DETAIL" />
+  </EntityType>
+  <EntityType Name="FLIGHT_DETAIL">
+    <Key>
+      <PropertyRef Name="PreventiveAirportID" />
+      <PropertyRef Name="FlightID" />
+    </Key>
+    <Property Name="PreventiveAirportID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FlightID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="StopoverDuration" Type="Int32" Nullable="false" />
+    <Property Name="Note" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AIRPORT" Relationship="Self.FK__FLIGHT_DE__Preve__656C112C" FromRole="FLIGHT_DETAIL" ToRole="AIRPORT" />
+    <NavigationProperty Name="FLIGHT" Relationship="Self.FK__FLIGHT_DE__Fligh__66603565" FromRole="FLIGHT_DETAIL" ToRole="FLIGHT" />
+  </EntityType>
+  <EntityType Name="FLIGHT_TICKET">
+    <Key>
+      <PropertyRef Name="FlightTicketID" />
+    </Key>
+    <Property Name="FlightTicketID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FlightID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TicketClassID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IDCard" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SeatID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="FlightStatus" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="FLIGHT" Relationship="Self.FK__FLIGHT_TI__Fligh__6383C8BA" FromRole="FLIGHT_TICKET" ToRole="FLIGHT" />
+    <NavigationProperty Name="TICKET_CLASS" Relationship="Self.FK__FLIGHT_TI__Ticke__6477ECF3" FromRole="FLIGHT_TICKET" ToRole="TICKET_CLASS" />
+  </EntityType>
+  <EntityType Name="FLIGHT_TICKET_CLASS_DETAIL">
+    <Key>
+      <PropertyRef Name="FlightID" />
+      <PropertyRef Name="TicketClassID" />
+    </Key>
+    <Property Name="FlightID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TicketClassID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Fare" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="SeatCapacity" Type="Int32" Nullable="false" />
+    <Property Name="TicketSold" Type="Int32" Nullable="false" />
+    <Property Name="SeatRemaining" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="FLIGHT" Relationship="Self.FK__FLIGHT_TI__Fligh__6D0D32F4" FromRole="FLIGHT_TICKET_CLASS_DETAIL" ToRole="FLIGHT" />
+    <NavigationProperty Name="TICKET_CLASS" Relationship="Self.FK__FLIGHT_TI__Ticke__6C190EBB" FromRole="FLIGHT_TICKET_CLASS_DETAIL" ToRole="TICKET_CLASS" />
+  </EntityType>
+  <EntityType Name="Parameter">
+    <Key>
+      <PropertyRef Name="ParametersID" />
+    </Key>
+    <Property Name="ParametersID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MinimumFlightTime" Type="Int32" Nullable="false" />
+    <Property Name="MaxPreventiveAirports" Type="Int32" Nullable="false" />
+    <Property Name="MinimumStopoverTime" Type="Int32" Nullable="false" />
+    <Property Name="MaximumStopoverTime" Type="Int32" Nullable="false" />
+    <Property Name="EarliestBookingTime" Type="Int32" Nullable="false" />
+    <Property Name="LatestBookingCancellationTime" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PERMISSION">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PermissionCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ACCOUNTs" Relationship="Self.FK__ACCOUNT__RoleID__628FA481" FromRole="PERMISSION" ToRole="ACCOUNT" />
+  </EntityType>
+  <EntityType Name="PLANE">
+    <Key>
+      <PropertyRef Name="PlaneID" />
+    </Key>
+    <Property Name="PlaneID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PlaneName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SeatCount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="FLIGHTs" Relationship="Self.FK__FLIGHT__PlaneID__693CA210" FromRole="PLANE" ToRole="FLIGHT" />
+    <NavigationProperty Name="SEATs" Relationship="Self.FK__SEAT__PlaneID__6A30C649" FromRole="PLANE" ToRole="SEAT" />
+  </EntityType>
+  <EntityType Name="SEAT">
+    <Key>
+      <PropertyRef Name="SeatID" />
+      <PropertyRef Name="PlaneID" />
+    </Key>
+    <Property Name="SeatID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PlaneID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TicketClassID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="PLANE" Relationship="Self.FK__SEAT__PlaneID__6A30C649" FromRole="SEAT" ToRole="PLANE" />
+    <NavigationProperty Name="TICKET_CLASS" Relationship="Self.FK__SEAT__TicketClas__6B24EA82" FromRole="SEAT" ToRole="TICKET_CLASS" />
+  </EntityType>
+  <EntityType Name="TICKET_CLASS">
+    <Key>
+      <PropertyRef Name="TicketClassID" />
+    </Key>
+    <Property Name="TicketClassID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TicketClassName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PricePercentage" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="FLIGHT_TICKET" Relationship="Self.FK__FLIGHT_TI__Ticke__6477ECF3" FromRole="TICKET_CLASS" ToRole="FLIGHT_TICKET" />
+    <NavigationProperty Name="FLIGHT_TICKET_CLASS_DETAIL" Relationship="Self.FK__FLIGHT_TI__Ticke__6C190EBB" FromRole="TICKET_CLASS" ToRole="FLIGHT_TICKET_CLASS_DETAIL" />
+    <NavigationProperty Name="SEATs" Relationship="Self.FK__SEAT__TicketClas__6B24EA82" FromRole="TICKET_CLASS" ToRole="SEAT" />
+  </EntityType>
+  <Association Name="FK__ACCOUNT__RoleID__628FA481">
+    <End Role="PERMISSION" Type="Self.PERMISSION" Multiplicity="1" />
+    <End Role="ACCOUNT" Type="Self.ACCOUNT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERMISSION">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="ACCOUNT">
+        <PropertyRef Name="RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FLIGHT__ArrivalA__68487DD7">
+    <End Role="AIRPORT" Type="Self.AIRPORT" Multiplicity="1" />
+    <End Role="FLIGHT" Type="Self.FLIGHT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AIRPORT">
+        <PropertyRef Name="AirportID" />
+      </Principal>
+      <Dependent Role="FLIGHT">
+        <PropertyRef Name="ArrivalAirportCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FLIGHT__Departur__6754599E">
+    <End Role="AIRPORT" Type="Self.AIRPORT" Multiplicity="1" />
+    <End Role="FLIGHT" Type="Self.FLIGHT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AIRPORT">
+        <PropertyRef Name="AirportID" />
+      </Principal>
+      <Dependent Role="FLIGHT">
+        <PropertyRef Name="DepartureAirportCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FLIGHT_DE__Preve__656C112C">
+    <End Role="AIRPORT" Type="Self.AIRPORT" Multiplicity="1" />
+    <End Role="FLIGHT_DETAIL" Type="Self.FLIGHT_DETAIL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AIRPORT">
+        <PropertyRef Name="AirportID" />
+      </Principal>
+      <Dependent Role="FLIGHT_DETAIL">
+        <PropertyRef Name="PreventiveAirportID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__DETAILED___Fligh__6E01572D">
+    <End Role="FLIGHT" Type="Self.FLIGHT" Multiplicity="1" />
+    <End Role="DETAILED_MONTHLY_REVENUE_REPORT" Type="Self.DETAILED_MONTHLY_REVENUE_REPORT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FLIGHT">
+        <PropertyRef Name="FlightID" />
+      </Principal>
+      <Dependent Role="DETAILED_MONTHLY_REVENUE_REPORT">
+        <PropertyRef Name="FlightID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FLIGHT__PlaneID__693CA210">
+    <End Role="PLANE" Type="Self.PLANE" Multiplicity="1" />
+    <End Role="FLIGHT" Type="Self.FLIGHT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PLANE">
+        <PropertyRef Name="PlaneID" />
+      </Principal>
+      <Dependent Role="FLIGHT">
+        <PropertyRef Name="PlaneID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FLIGHT_DE__Fligh__66603565">
+    <End Role="FLIGHT" Type="Self.FLIGHT" Multiplicity="1" />
+    <End Role="FLIGHT_DETAIL" Type="Self.FLIGHT_DETAIL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FLIGHT">
+        <PropertyRef Name="FlightID" />
+      </Principal>
+      <Dependent Role="FLIGHT_DETAIL">
+        <PropertyRef Name="FlightID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FLIGHT_TI__Fligh__6383C8BA">
+    <End Role="FLIGHT" Type="Self.FLIGHT" Multiplicity="1" />
+    <End Role="FLIGHT_TICKET" Type="Self.FLIGHT_TICKET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FLIGHT">
+        <PropertyRef Name="FlightID" />
+      </Principal>
+      <Dependent Role="FLIGHT_TICKET">
+        <PropertyRef Name="FlightID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FLIGHT_TI__Fligh__6D0D32F4">
+    <End Role="FLIGHT" Type="Self.FLIGHT" Multiplicity="1" />
+    <End Role="FLIGHT_TICKET_CLASS_DETAIL" Type="Self.FLIGHT_TICKET_CLASS_DETAIL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FLIGHT">
+        <PropertyRef Name="FlightID" />
+      </Principal>
+      <Dependent Role="FLIGHT_TICKET_CLASS_DETAIL">
+        <PropertyRef Name="FlightID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FLIGHT_TI__Ticke__6477ECF3">
+    <End Role="TICKET_CLASS" Type="Self.TICKET_CLASS" Multiplicity="1" />
+    <End Role="FLIGHT_TICKET" Type="Self.FLIGHT_TICKET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TICKET_CLASS">
+        <PropertyRef Name="TicketClassID" />
+      </Principal>
+      <Dependent Role="FLIGHT_TICKET">
+        <PropertyRef Name="TicketClassID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FLIGHT_TI__Ticke__6C190EBB">
+    <End Role="TICKET_CLASS" Type="Self.TICKET_CLASS" Multiplicity="1" />
+    <End Role="FLIGHT_TICKET_CLASS_DETAIL" Type="Self.FLIGHT_TICKET_CLASS_DETAIL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TICKET_CLASS">
+        <PropertyRef Name="TicketClassID" />
+      </Principal>
+      <Dependent Role="FLIGHT_TICKET_CLASS_DETAIL">
+        <PropertyRef Name="TicketClassID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SEAT__PlaneID__6A30C649">
+    <End Role="PLANE" Type="Self.PLANE" Multiplicity="1" />
+    <End Role="SEAT" Type="Self.SEAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PLANE">
+        <PropertyRef Name="PlaneID" />
+      </Principal>
+      <Dependent Role="SEAT">
+        <PropertyRef Name="PlaneID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SEAT__TicketClas__6B24EA82">
+    <End Role="TICKET_CLASS" Type="Self.TICKET_CLASS" Multiplicity="1" />
+    <End Role="SEAT" Type="Self.SEAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TICKET_CLASS">
+        <PropertyRef Name="TicketClassID" />
+      </Principal>
+      <Dependent Role="SEAT">
+        <PropertyRef Name="TicketClassID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FlightTicketManagementEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ACCOUNTs" EntityType="Self.ACCOUNT" />
+    <EntitySet Name="AIRPORTs" EntityType="Self.AIRPORT" />
+    <EntitySet Name="ANNUAL_REVENUE_REPORT" EntityType="Self.ANNUAL_REVENUE_REPORT" />
+    <EntitySet Name="DETAILED_ANNUAL_REVENUE_REPORT" EntityType="Self.DETAILED_ANNUAL_REVENUE_REPORT" />
+    <EntitySet Name="DETAILED_MONTHLY_REVENUE_REPORT" EntityType="Self.DETAILED_MONTHLY_REVENUE_REPORT" />
+    <EntitySet Name="FLIGHTs" EntityType="Self.FLIGHT" />
+    <EntitySet Name="FLIGHT_DETAIL" EntityType="Self.FLIGHT_DETAIL" />
+    <EntitySet Name="FLIGHT_TICKET" EntityType="Self.FLIGHT_TICKET" />
+    <EntitySet Name="FLIGHT_TICKET_CLASS_DETAIL" EntityType="Self.FLIGHT_TICKET_CLASS_DETAIL" />
+    <EntitySet Name="Parameters" EntityType="Self.Parameter" />
+    <EntitySet Name="PERMISSIONs" EntityType="Self.PERMISSION" />
+    <EntitySet Name="PLANEs" EntityType="Self.PLANE" />
+    <EntitySet Name="SEATs" EntityType="Self.SEAT" />
+    <EntitySet Name="TICKET_CLASS" EntityType="Self.TICKET_CLASS" />
+    <AssociationSet Name="FK__ACCOUNT__RoleID__628FA481" Association="Self.FK__ACCOUNT__RoleID__628FA481">
+      <End Role="PERMISSION" EntitySet="PERMISSIONs" />
+      <End Role="ACCOUNT" EntitySet="ACCOUNTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FLIGHT__ArrivalA__68487DD7" Association="Self.FK__FLIGHT__ArrivalA__68487DD7">
+      <End Role="AIRPORT" EntitySet="AIRPORTs" />
+      <End Role="FLIGHT" EntitySet="FLIGHTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FLIGHT__Departur__6754599E" Association="Self.FK__FLIGHT__Departur__6754599E">
+      <End Role="AIRPORT" EntitySet="AIRPORTs" />
+      <End Role="FLIGHT" EntitySet="FLIGHTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FLIGHT_DE__Preve__656C112C" Association="Self.FK__FLIGHT_DE__Preve__656C112C">
+      <End Role="AIRPORT" EntitySet="AIRPORTs" />
+      <End Role="FLIGHT_DETAIL" EntitySet="FLIGHT_DETAIL" />
+    </AssociationSet>
+    <AssociationSet Name="FK__DETAILED___Fligh__6E01572D" Association="Self.FK__DETAILED___Fligh__6E01572D">
+      <End Role="FLIGHT" EntitySet="FLIGHTs" />
+      <End Role="DETAILED_MONTHLY_REVENUE_REPORT" EntitySet="DETAILED_MONTHLY_REVENUE_REPORT" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FLIGHT__PlaneID__693CA210" Association="Self.FK__FLIGHT__PlaneID__693CA210">
+      <End Role="PLANE" EntitySet="PLANEs" />
+      <End Role="FLIGHT" EntitySet="FLIGHTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FLIGHT_DE__Fligh__66603565" Association="Self.FK__FLIGHT_DE__Fligh__66603565">
+      <End Role="FLIGHT" EntitySet="FLIGHTs" />
+      <End Role="FLIGHT_DETAIL" EntitySet="FLIGHT_DETAIL" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FLIGHT_TI__Fligh__6383C8BA" Association="Self.FK__FLIGHT_TI__Fligh__6383C8BA">
+      <End Role="FLIGHT" EntitySet="FLIGHTs" />
+      <End Role="FLIGHT_TICKET" EntitySet="FLIGHT_TICKET" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FLIGHT_TI__Fligh__6D0D32F4" Association="Self.FK__FLIGHT_TI__Fligh__6D0D32F4">
+      <End Role="FLIGHT" EntitySet="FLIGHTs" />
+      <End Role="FLIGHT_TICKET_CLASS_DETAIL" EntitySet="FLIGHT_TICKET_CLASS_DETAIL" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FLIGHT_TI__Ticke__6477ECF3" Association="Self.FK__FLIGHT_TI__Ticke__6477ECF3">
+      <End Role="TICKET_CLASS" EntitySet="TICKET_CLASS" />
+      <End Role="FLIGHT_TICKET" EntitySet="FLIGHT_TICKET" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FLIGHT_TI__Ticke__6C190EBB" Association="Self.FK__FLIGHT_TI__Ticke__6C190EBB">
+      <End Role="TICKET_CLASS" EntitySet="TICKET_CLASS" />
+      <End Role="FLIGHT_TICKET_CLASS_DETAIL" EntitySet="FLIGHT_TICKET_CLASS_DETAIL" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SEAT__PlaneID__6A30C649" Association="Self.FK__SEAT__PlaneID__6A30C649">
+      <End Role="PLANE" EntitySet="PLANEs" />
+      <End Role="SEAT" EntitySet="SEATs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SEAT__TicketClas__6B24EA82" Association="Self.FK__SEAT__TicketClas__6B24EA82">
+      <End Role="TICKET_CLASS" EntitySet="TICKET_CLASS" />
+      <End Role="SEAT" EntitySet="SEATs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
